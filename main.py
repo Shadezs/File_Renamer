@@ -8,10 +8,44 @@ from tkinter.filedialog import askdirectory
 import csv
 
 # creating main tkinter window/toplevel
-extention = '.STEP'
 master = Tk()
 master.geometry('600x200')
+lpartn_name = []
+filedir=''
+filepath = ''
+listoffilenames = []
+extention = '.STEP'
 
+l1 = Label(master, text="Parts number and name csv:")
+l2 = Label(master, text="Path:")
+
+# grid method to arrange labels in respective
+# rows and columns as specified
+l1.grid(row=0, column=0, sticky=W, pady=2)
+l2.grid(row=1, column=0, sticky=W, pady=2)
+
+# entry widgets, used to take entry from user
+e1 = Entry(master)
+e2 = Entry(master)
+
+# this will arrange entry widgets
+e1.grid(row=0, column=1, pady=2)
+e2.grid(row=1, column=1, pady=2)
+
+# checkbutton widget
+c1 = Button(master, text="Path", command=lambda: getfilepath())
+c1.grid(row=2, column=0, sticky=W, columnspan=2)
+
+# button widget
+b1 = Button(master, text="Rename", command=lambda: renameall())
+b2 = Button(master, text='Open cvs', command=lambda: open_file())
+
+# arranging button widgets
+b1.grid(row=2, column=2, sticky=E)
+b2.grid(row=2, column=3, sticky=E)
+
+# infinite loop which can be terminated
+# by keyboard or mouse interrupt
 
 def renameall():
     i = 0
@@ -20,7 +54,7 @@ def renameall():
     print(len(listoffilenames))
     while i < len(listoffilenames):
         filename = listoffilenames[i][0:12]  # This gets just the first 12 charates of the filename and puts in filename
-        filespath = filedir + '/' + listoffilenames(i)
+        filespath = filedir + '/' + listoffilenames[i]
         print("first while")
         while ind < len(lpartn_name):  # this loop checks filename to partnumber
             print('second while')
@@ -65,6 +99,7 @@ def log(file, list, path):
 
 
 def getfilepath():
+    global listoffilenames
     filedir = askdirectory()
     print(filedir)
     lfilenames = os.listdir(filedir)
@@ -72,8 +107,8 @@ def getfilepath():
     listoffilenames=lfilenames
     e2.insert(0, filedir)
 
-
 def open_file():
+    global lpartn_name
     filePath = askopenfilename()
     e1.insert(0, filePath)
     if filePath is not None:
@@ -82,41 +117,10 @@ def open_file():
             lpartn_name = list(reader)
     print(lpartn_name)
     # this wil create a label widget
-
-
-l1 = Label(master, text="Parts number and name csv:")
-l2 = Label(master, text="Path:")
-
-# grid method to arrange labels in respective
-# rows and columns as specified
-l1.grid(row=0, column=0, sticky=W, pady=2)
-l2.grid(row=1, column=0, sticky=W, pady=2)
-
-# entry widgets, used to take entry from user
-e1 = Entry(master)
-e2 = Entry(master)
-
-# this will arrange entry widgets
-e1.grid(row=0, column=1, pady=2)
-e2.grid(row=1, column=1, pady=2)
-
-# checkbutton widget
-c1 = Button(master, text="Path", command=lambda: getfilepath())
-c1.grid(row=2, column=0, sticky=W, columnspan=2)
-
-# button widget
-b1 = Button(master, text="Rename", command=lambda: renameall())
-b2 = Button(master, text='Open cvs', command=lambda: open_file())
-
-# arranging button widgets
-b1.grid(row=2, column=2, sticky=E)
-b2.grid(row=2, column=3, sticky=E)
-
-# infinite loop which can be terminated
-# by keyboard or mouse interrupt
-
+def printalllist():
+    print('this is the array tha holds filenames: ')
+    print(listoffilenames)
+    print('this is the array that holds part names and number: ')
+    print(lpartn_name)
 mainloop()
-lpartn_name = []
-filedir=''
-filepath = ''
-listoffilenames = []
+
